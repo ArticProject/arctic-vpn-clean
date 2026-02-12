@@ -1,0 +1,21 @@
+name: arctic_vpn
+description: Arctic VPN - fake to real VPN app
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8  # для иконок
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  # Добавь позже assets: и openvpn_flutter
