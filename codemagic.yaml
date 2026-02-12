@@ -1,0 +1,15 @@
+workflows:
+  flutter-android:
+    name: Flutter Android Build
+    instance_type: mac_mini_m1  # или linux_m2 если хочешь быстрее
+    max_build_duration: 60
+    environment:
+      flutter: stable
+    scripts:
+      - flutter pub get
+      - flutter create . --platforms=android   # <-- ключевой шаг
+      - flutter pub get
+      - flutter build apk --release            # или appbundle --release
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/*.aab
