@@ -1,15 +1,20 @@
 workflows:
-  flutter-android:
-    name: Flutter Android Build
-    instance_type: mac_mini_m1  # или linux_m2 если хочешь быстрее
+  android-build:
+    name: Arctic VPN Android Build
+    instance_type: mac_mini_m1  # можно изменить на linux_m2, если хочешь быстрее
     max_build_duration: 60
     environment:
       flutter: stable
     scripts:
       - flutter pub get
-      - flutter create . --platforms=android   # <-- ключевой шаг
+      - flutter clean || true  # очистит старый кэш, если был
+      - flutter create . --platforms=android  # <-- это создаст папку android заново!
       - flutter pub get
-      - flutter build apk --release            # или appbundle --release
+      - flutter build apk --release --no-tree-shake-icons  # APK для теста (можно добавить --split-per-abi для меньшего размера)
     artifacts:
-      - build/**/outputs/**/*.apk
-      - build/**/outputs/**/*.aab
+      - build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/flutter-apk/app-*.apk  # если сплит
+    publishing:
+      email:
+        recipients:
+          - твой@email.com  # опционально, чтобы получить APK на почту
