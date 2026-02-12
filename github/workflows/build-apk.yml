@@ -1,0 +1,48 @@
+name: Build Flutter Android APK
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # позволяет запускать вручную по кнопке
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Клонируем репозиторий
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Устанавливаем Java (нужен для Android)
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 3. Устанавливаем Flutter
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.3'   # или 'stable' для самой свежей стабильной
+          channel: 'stable'
+          cache: true
+
+      # 4. Устанавливаем зависимости
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 5. Сборка APK (release версия)
+      - name: Build APK
+        run: flutter build apk --release --split-per-abi
+
+      # 6. Загружаем APK как artifact (чтобы скачать после билда)
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: arctic-vpn-apk
+          path: build/app/outputs/flutter-apk/app-*-release.apk
+          retention-days: 7
