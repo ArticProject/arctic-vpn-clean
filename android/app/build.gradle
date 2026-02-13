@@ -5,7 +5,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion 21
+    namespace "com.example.arctic_vpn"
+    compileSdkVersion 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
