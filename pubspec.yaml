@@ -10,7 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8  # для иконок
+  flutter_riverpod: ^2.5.1      # или последняя версия (на февраль 2026 — 2.5.x)
+  shared_preferences: ^2.3.0    # для сохранения темы
 
 dev_dependencies:
   flutter_test:
