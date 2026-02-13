@@ -1,13 +1,12 @@
 pluginManagement {
-    def flutterSdkPath = System.getenv("FLUTTER_ROOT")
-
-    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
-
     repositories {
         google()
         mavenCentral()
         gradlePluginPortal()
     }
+
+    def flutterSdkPath = System.getenv("FLUTTER_ROOT")
+    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 }
 
 plugins {
