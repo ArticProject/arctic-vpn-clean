@@ -1,194 +1,143 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'providers/theme_provider.dart'; // если есть
 
 void main() {
-  runApp(
-    const ProviderScope(child: ArcticVpnApp()),
-  );
+  runApp(const ArcticApp());
 }
 
-class ArcticVpnApp extends ConsumerWidget {
-  const ArcticVpnApp({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(themeModeProvider);
-
-    return MaterialApp(
-      title: 'Arctic VPN',
-      debugShowCheckedModeBanner: false,
-      themeMode: themeMode,
-      theme: ThemeData.light(useMaterial3: true),
-      darkTheme: ThemeData.dark(useMaterial3: true),
-      home: const HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProviderStateMixin {
-  bool isConnected = false;
-  late AnimationController _controller;
-
-  // Фейковые данные (потом заменить на реальные)
-  final double speedDown = 45.2; // Мбит/с
-  final double speedUp = 12.8;
-  final double usedGB = 31.3;
-  final double totalGB = 100.0;
-  final String expiryDate = "19.03.2026";
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+class ArcticApp extends StatelessWidget {
+  const ArcticApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: ArcticScreen(),
+    );
+  }
+}
 
+class ArcticScreen extends StatelessWidget {
+  const ArcticScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text('Arctic VPN'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // Экран настроек (потом добавим)
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Настройки открыты')),
-              );
-            },
+      backgroundColor: const Color(0xFF2F3142),
+      body: Center(
+        child: Container(
+          width: 344,
+          height: 640,
+          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 26),
+          decoration: BoxDecoration(
+            color: const Color(0xFFF2F3F7),
+            borderRadius: BorderRadius.circular(36),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x33000000),
+                blurRadius: 40,
+                offset: Offset(0, 25),
+              ),
+            ],
           ),
-          IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: () {
-              // Telegram или поделиться
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Telegram открывается')),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: isDark
-                ? [const Color(0xFF0A1421), const Color(0xFF001F3F)]
-                : [Colors.blue[50]!, Colors.white],
-          ),
-        ),
-        child: SafeArea(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    "Arctic VPN",
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Row(
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isConnected = !isConnected;
-                          });
-                          if (isConnected) {
-                            _controller.repeat(reverse: true);
-                          } else {
-                            _controller.stop();
-                          }
-                        },
-                        child: RotationTransition(
-                          turns: Tween(begin: -0.03, end: 0.03).animate(_controller),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 500),
-                            width: 240,
-                            height: 240,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: RadialGradient(
-                                colors: isConnected
-                                    ? [const Color(0xFF4CAF50), const Color(0xFF1B5E20)]
-                                    : [const Color(0xFF40C4FF), const Color(0xFF01579B)],
-                              ),
-                              boxShadow: isConnected
-                                  ? [
-                                      BoxShadow(
-                                        color: Colors.greenAccent.withOpacity(0.6),
-                                        blurRadius: 60,
-                                        spreadRadius: 30,
-                                      )
-                                    ]
-                                  : [],
-                            ),
-                            child: const Icon(
-                              Icons.ac_unit_rounded,
-                              size: 180,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                      Icon(Icons.settings, size: 20, color: Colors.black54),
+                      SizedBox(width: 18),
+                      Icon(Icons.send, size: 20, color: Colors.black54),
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 46),
+              Center(
+                child: Container(
+                  width: 260,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF2F3F7),
+                    borderRadius: BorderRadius.circular(28),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: Offset(-8, -8),
+                        blurRadius: 16,
                       ),
-                      const SizedBox(height: 40),
-                      Text(
-                        isConnected ? 'Connected ❄️' : 'Disconnected',
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: isConnected ? Colors.greenAccent : Colors.redAccent,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Подписка до $expiryDate',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: isDark ? Colors.white70 : Colors.black54,
-                        ),
+                      BoxShadow(
+                        color: Color(0x22000000),
+                        offset: Offset(8, 8),
+                        blurRadius: 16,
                       ),
                     ],
                   ),
+                  child: const Text(
+                    "Чтобы выключить\nВПН нажмите на\nкнопку",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 17,
+                      height: 1.35,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
               ),
-              // Нижние карточки
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildCard(
-                      title: 'Скорость',
-                      value: isConnected ? '${speedDown.toStringAsFixed(1)} ↓ / ${speedUp.toStringAsFixed(1)} ↑ Мбит/с' : '0 Мбит/с',
-                      icon: Icons.speed,
+              const SizedBox(height: 54),
+              Center(
+                child: Container(
+                  width: 96,
+                  height: 96,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFFF2F3F7),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: Offset(-10, -10),
+                        blurRadius: 18,
+                      ),
+                      BoxShadow(
+                        color: Color(0x22000000),
+                        offset: Offset(10, 10),
+                        blurRadius: 18,
+                      ),
+                    ],
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.ac_unit,
+                      size: 42,
+                      color: Color(0xFF2E8BFF),
                     ),
-                    _buildCard(
-                      title: 'Потрачено трафика',
-                      value: '${usedGB.toStringAsFixed(1)} ГБ / $totalGB ГБ',
-                      icon: Icons.data_usage,
-                    ),
-                  ],
+                  ),
                 ),
+              ),
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  BottomCard(
+                    title: "Скорость с VPN",
+                    value: "85 Mbps",
+                  ),
+                  BottomCard(
+                    title: "Подписка активна до",
+                    value: "24.03.2026",
+                  ),
+                ],
               ),
             ],
           ),
@@ -196,28 +145,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
       ),
     );
   }
-
-  Widget _buildCard({
-    required String title,
-    required String value,
-    required IconData icon,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.2)),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: Colors.white70, size: 32),
-          const SizedBox(height: 8),
-          Text(title, style: const TextStyle(fontSize: 14, color: Colors.white70)),
-          const SizedBox(height: 4),
-          Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
-        ],
-      ),
-    );
-  }
 }
+
+class BottomCard extends StatelessWidget {
+  final String title;
+  final String value;
+
+  const BottomCard({
+    super.key,
+    required this.title,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 140,
+      height: 110,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF2F3F7),
+        
