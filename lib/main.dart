@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'providers/theme_provider.dart'; // если файл в lib/providers
+import 'providers/theme_provider.dart'; // импорт провайдера
 
 void main() {
-  runApp(const ProviderScope(child: ArcticVpnApp()));
+  runApp(
+    const ProviderScope(  // обязательно!
+      child: ArcticVpnApp(),
+    ),
+  );
 }
 
 class ArcticVpnApp extends ConsumerWidget {
@@ -17,26 +21,8 @@ class ArcticVpnApp extends ConsumerWidget {
       title: 'Arctic VPN',
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF40C4FF),
-          brightness: Brightness.light,
-        ),
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent, elevation: 0),
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF40C4FF),
-          brightness: Brightness.dark,
-        ),
-        scaffoldBackgroundColor: const Color(0xFF0A1421),
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent, elevation: 0),
-      ),
+      theme: ThemeData.light(useMaterial3: true),
+      darkTheme: ThemeData.dark(useMaterial3: true),
       home: const HomeScreen(),
     );
   }
@@ -54,11 +40,11 @@ class HomeScreen extends ConsumerWidget {
         title: const Text('Arctic VPN'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              final current = ref.read(themeModeProvider);
+              ref.read(themeModeProvider.notifier).setTheme(
+                current == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark,
               );
             },
           ),
@@ -69,30 +55,24 @@ class HomeScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: () {
-                // твоя логика подключения позже
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 500),
-                width: 220,
-                height: 220,
+              onTap: () {}, // сюда потом логику VPN
+              child: Container(
+                width: 200,
+                height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: isDark
-                        ? [const Color(0xFF40C4FF), const Color(0xFF01579B)]
-                        : [Colors.blueAccent, Colors.lightBlue],
-                  ),
-                  boxShadow: isDark
-                      ? [BoxShadow(color: Colors.blueAccent.withOpacity(0.6), blurRadius: 50)]
-                      : [],
+                  color: isDark ? Colors.blueGrey[800] : Colors.blue[200],
                 ),
-                child: const Icon(Icons.ac_unit_rounded, size: 160, color: Colors.white),
+                child: Icon(
+                  Icons.ac_unit,
+                  size: 120,
+                  color: isDark ? Colors.white : Colors.black87,
+                ),
               ),
             ),
             const SizedBox(height: 40),
             Text(
-              'Disconnected', // потом динамически
+              'Disconnected',
               style: TextStyle(
                 fontSize: 32,
                 color: isDark ? Colors.redAccent : Colors.red,
