@@ -1,27 +1,29 @@
-plugins {
-    id "com.android.application" version "8.1.1" apply false
-    id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin"
-}
+// MODULE: app
+
+apply plugin: 'com.android.application'
 
 android {
-    compileSdk 34
+    // Примерная конфигурация. Подкорректируй по необходимости:
+    namespace "com.example.arctic_vpn"
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "com.example.arctic_vpn"
-        minSdk 21
-        targetSdk 34
+        minSdkVersion 21
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 
-flutter {
-    source '../..'
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.10"
+    // Добавь остальные зависимости, если требуются
 }
