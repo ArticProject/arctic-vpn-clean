@@ -10,21 +10,21 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_riverpod: ^2.5.1      # или последняя версия (на февраль 2026 — 2.5.x)
-  shared_preferences: ^2.3.0    # для сохранения темы
+  flutter_riverpod: ^2.5.1
+  shared_preferences: ^2.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-flutter:
-  uses-material-design: true
-  # Добавь позже assets: и openvpn_flutter
-dev_dependencies:
   flutter_launcher_icons: ^0.13.1
 
 flutter_launcher_icons:
   android: true
   ios: false
   image_path: "assets/icon.png"
-  
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icon.png
+    
