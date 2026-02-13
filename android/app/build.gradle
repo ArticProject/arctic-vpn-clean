@@ -1,17 +1,17 @@
 plugins {
     id "com.android.application"
-    id "kotlin-android"
+    id "org.jetbrains.kotlin.android"
     id "dev.flutter.flutter-gradle-plugin"
 }
 
 android {
     namespace "com.example.arctic_vpn"
-    compileSdkVersion 34
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.arctic_vpn"
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdk 21
+        targetSdk 34
         versionCode 1
         versionName "1.0"
     }
@@ -24,7 +24,5 @@ android {
 }
 
 flutter {
-    source "../.."
+    source '../..'
 }
-
-dependencies {}
