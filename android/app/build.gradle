@@ -1,11 +1,10 @@
 plugins {
-    id "com.android.application"
-    id "org.jetbrains.kotlin.android"
+    id "com.android.application" version "8.1.1" apply false
+    id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
 
 android {
-    namespace "com.example.arctic_vpn"
     compileSdk 34
 
     defaultConfig {
