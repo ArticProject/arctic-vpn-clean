@@ -8,9 +8,9 @@ workflows:
       flutter: stable
 
     scripts:
-      - flutter pub get
-      - flutter clean
-      - flutter build apk --release --no-tree-shake-icons
+  - flutter clean
+  - flutter pub get
+  - flutter build apk --release --no-tree-shake-icons
 
     artifacts:
       - build/app/outputs/flutter-apk/app-release.apk
