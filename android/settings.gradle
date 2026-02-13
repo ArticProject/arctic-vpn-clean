@@ -1,5 +1,23 @@
-// Подключаем модуль app
-include ':app'
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
 
-// Имя корневого проекта (можно любое, например имя репозитория)
-rootProject.name = 'arctic_vpn_clean'
+    def flutterSdkPath = {
+        def properties = new Properties()
+        file("local.properties").withInputStream { properties.load(it) }
+        return properties.getProperty("flutter.sdk")
+    }()
+
+    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+}
+
+plugins {
+    id "dev.flutter.flutter-plugin-loader" version "1.0.0"
+}
+
+include ":app"
+
+rootProject.name = "arctic_vpn_clean"
