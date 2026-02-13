@@ -7,8 +7,8 @@ workflows:
     scripts:
       - flutter clean
       - flutter pub get
-      - flutter build apk --release --no-tree-shake-icons
+      - flutter create . --platforms=android
+      - flutter build apk --release
 
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
-      
